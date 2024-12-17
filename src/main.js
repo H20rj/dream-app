@@ -20,8 +20,9 @@ form.addEventListener('submit', async (e) => {
 
     if (response.ok) {
       const { image } = await response.json();
+      downloadLink(image);
       const result = document.querySelector('#result');
-      result.innerHTML = `<img src="${image}" width="512" />`;
+      result.innerHTML = `<img src="${ image }" width="512" />`;
     } else {
       const err = await response.text();
       alert(err);
@@ -35,14 +36,26 @@ form.addEventListener('submit', async (e) => {
 
 function showSpinner() {
   const button = document.querySelector('button');
-  const result = document.querySelector('#result');
   button.disabled = true;
   button.innerHTML = 'Dream... <span class="spinner">🧠</span>';
-  result.innerHTML = 'Image will appear here...  <span class="spinner">🥸</span>'
+}
+
+// Added a download link function
+function downloadLink(image) {
+  try {
+    const link = document.querySelector('a');
+    link.innerHTML = "Download";
+    link.href = image;
+    link.download = 'ai_image.png';
+    link.target = '_blank';
+  } catch (error) {
+    console.error("Failed to create a download link")
+    alert("Could not create download link")
+  }
 }
 
 function hideSpinner() {
   const button = document.querySelector('button');
   button.disabled = false;
-  button.innerHTML = 'Dream'
+  button.innerHTML = 'Dream';
 }
